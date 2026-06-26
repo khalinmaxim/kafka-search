@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kafka Search</title>
+<link rel="stylesheet" href="/static/css/app.css">
+</head>
+<body>
+<div class="container">
+  <h1>⚡ Kafka Search</h1>
+
+  <div class="card">
+    <div class="form-grid">
+      <div class="form-group full">
+        <label>Brokers</label>
+        <div class="row">
+          <input id="brokers" type="text" placeholder="host1:9092,host2:9092">
+          <button class="btn" onclick="loadTopics()">Load Topics</button>
+        </div>
+      </div>
+
+      <div class="form-group full">
+        <label>Address overrides <span style="color:#585b70;font-weight:400;text-transform:none">(optional)</span></label>
+        <input id="overrides" type="text" placeholder="internal-host:9092=accessible-host:9092, …">
+        <span class="hint">Если Kafka возвращает недоступные внутренние адреса — укажи маппинг</span>
+      </div>
+
+      <div class="form-group full">
+        <label>Topic</label>
+        <div class="topic-dropdown" id="topicDropdown">
+          <div class="topic-input-wrap">
+            <input id="topicSearch" type="text" placeholder="— load topics first —" autocomplete="off" readonly>
+            <span class="topic-arrow">▼</span>
+          </div>
+          <div class="topic-list" id="topicList"></div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Search Query</label>
+        <input id="query" type="text" placeholder="1567">
+        <span class="hint">Substring in raw message, or exact value if Field is set</span>
+      </div>
+
+      <div class="form-group">
+        <label>Field (optional)</label>
+        <input id="field" type="text" placeholder="id  or  data.user_id">
+        <span class="hint">JSON field path. Leave empty to search full text</span>
+      </div>
+
+      <div class="form-group">
+        <label>From (optional)</label>
+        <input id="from_ts" type="datetime-local">
+        <span class="hint">Leave empty to read from beginning</span>
+      </div>
+
+      <div class="form-group">
+        <label>Limit</label>
+        <input id="limit" type="number" value="100" min="1" max="10000">
+        <span class="hint">Max matching messages to return</span>
+      </div>
+
+      <div class="form-group full" style="align-items: flex-start;">
+        <button class="btn btn-search" onclick="search()">Search</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="status" class="status-bar" style="margin-bottom:12px; display:none;">
+    <div class="spinner" id="spinner"></div>
+    <span id="status-text"></span>
+  </div>
+
+  <div id="error" class="error-msg" style="display:none; margin-bottom:12px;"></div>
+
+  <div id="results" style="display:none;" class="card">
+    <table>
+      <thead>
+        <tr>
+          <th class="td-partition">Partition</th>
+          <th class="td-offset">Offset</th>
+          <th class="td-ts">Timestamp</th>
+          <th class="td-key">Key</th>
+          <th class="td-value">Value</th>
+        </tr>
+      </thead>
+      <tbody id="tbody"></tbody>
+    </table>
+  </div>
+</div>
+
+
+<script src="/static/js/app.js"></script>
+</body>
+</html>
