@@ -11,7 +11,7 @@
 ## Запуск
 
 ```bash
-git clone ...
+git clone https://github.com/khalinmaxim/kafka-search.git
 cd kafka-search
 go run .
 ```
